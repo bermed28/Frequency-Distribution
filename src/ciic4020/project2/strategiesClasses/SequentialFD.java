@@ -34,7 +34,7 @@ public class SequentialFD<E extends Comparable<E>> extends AbstractFDStrategy<E>
 			/*For each elm in dataSet, we go through each element in our entries stored*/
 			boolean entryFound = false; 
 			for (int i=0; i<results.size() && !entryFound; i++) {
-				/*If we have found an entry stores in results we just add one to that frequency of that element*/
+				/*If we have found an entry stored in results we just add one to that frequency of that element*/
 				Map.Entry<E, Integer> entry = results.get(i); 
 		
 				if (entry.getKey().equals(e)) { 
