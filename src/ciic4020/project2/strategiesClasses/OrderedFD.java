@@ -42,22 +42,31 @@ public class OrderedFD<E extends Comparable<E>> extends AbstractFDStrategy<E> {
 		 * entry inside results
 		 *
 		 **/
+		int i = 0;
 		for (E e : dataSet) { 
-
 			/** 
-			 * Like we did on SortedListFD, we search for e but this time directly in results instead of an auxiliary list. 
-			 * If we find a bigger one or reach the end of the list, we stop
+			 * If we're starting our search just add the first elm into results with a new entry
+			 * We can do this because the list is in order
 			 */
-			int i;
-			for (i=0; i < results.size() && results.get(i).getKey().compareTo(e) < 0; i++);
+			if(results.isEmpty()) {
+				results.add(new AbstractMap.SimpleEntry<E,Integer>(e,1));
+				continue;
+			} 
 			
-			/*If we do find an elm equal to e, we add one to the frequency*/
+			/*If we find an elm equal to e while being in bounds, we add one to the frequency*/
 			if(i < results.size() && results.get(i).getKey().compareTo(e) == 0) 
 				results.get(i).setValue(results.get(i).getValue()+1);
 
-			else
-				/*Else, we just create a new entry for e with a frequency of 1 because it's the first time we count this elm*/
+			else {
+				/**
+				 * Else, we just create a new entry for e 
+				 * with a frequency of 1 because it's the first time 
+				 * we count this elm, and we also move to the next index after counting
+				 */
 				results.add(new AbstractMap.SimpleEntry<E, Integer>(e, 1)); 
+				i++;
+			}
+
 		}
 
 
