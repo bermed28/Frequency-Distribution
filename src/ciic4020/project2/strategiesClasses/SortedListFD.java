@@ -65,35 +65,26 @@ public class SortedListFD<E extends Comparable<E>> extends AbstractFDStrategy<E>
 
 		/*Next, we iterate though our dataSet to see if we have any entries of e created in out SortedList*/
 		for (E e : dataSet) { 
-			boolean entryFound = false; 
-			for (int i=0; i < sortedlist.size() && !entryFound; i++) {
-				ComparableEntry<E, Integer> entry = sortedlist.get(i); 
+			/**
+			 * We search for our element in our SortedList
+			 * Notice that we stop when we reach the end of the list or we find an element that is bigger than e
+			 * This is because the list is SORTED, hence the use of a SortedList
+			 * By haven the list ordered we can just stop searching when we find an elm bigger than e, because it means e isn't on the list
+			 */
+			int i;
+			for (i = 0; i < sortedlist.size() && sortedlist.get(i).getKey().compareTo(e) < 0; i++);
 			
-				/**
-				 * If we created an entry for our elm (AKA the elms are equal), 
-				 * we just add one to our frequency and continue searching
-				 */
-				if(entry.getKey().compareTo(e) == 0) {
-					
-					entry.setValue(entry.getValue()+1);
-					entryFound = true;
-					
-				/**
-				 * If not, we just break to create a new entry for e.
-				 * Notice that we just have to find an elm that is bigger than e.
-				 * This is because since the list is sorted, we just need to find an elm that 
-				 * is bigger than e to conclude that there is no entry created for e.
-				 */
-				} else if(entry.getKey().compareTo(e) > 0) break;
-				
-				
-			}
+			/*When we find an element that is equal to e, it means it's another frequency of e, so we add 1 to said frequency*/
+			if(i < sortedlist.size() && sortedlist.get(i).getKey().compareTo(e) == 0) 
+				sortedlist.get(i).setValue(sortedlist.get(i).getValue() + 1);
 			
-			/*If we haven't created an entry for our elm, we just create a new one for the first instance of e*/
-			if (!entryFound) { 
-				ComparableEntry<E, Integer> entry = new ComparableEntry<E, Integer>(e, 1); 
-				sortedlist.add(entry); 
-			}	
+			else 
+				/**
+				 * If we never find one elm equal to e, it means we haven't created an entry for e, so we create one with value 1
+				 * This means that it is the first time we see e in our counting process
+				 */
+				sortedlist.add(new ComparableEntry<E, Integer>(e, 1)); 
+		
 		}
 
 		/*Finally, we just go through our entries one y one and add them to our results ArrayList and return it*/
